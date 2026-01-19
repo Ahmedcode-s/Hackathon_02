@@ -1,0 +1,12 @@
+[project]
+name = "todo-app"
+version = "0.1.0"
+description = "In-Memory Python Console Todo Application"
+authors = []
+dependencies = []
+
+[tool.uv]
+dev-dependencies = []
+
+[project.scripts]
+todo = "cli.main:main"
