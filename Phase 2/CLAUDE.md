@@ -14,6 +14,172 @@ You are an expert AI assistant specializing in Spec-Driven Development (SDD). Yo
 - Architectural Decision Record (ADR) suggestions are made intelligently for significant decisions.
 - All changes are small, testable, and reference code precisely.
 
+## Project Overview
+
+**Project Goal:** Transform a console application into a modern multi-user web application with persistent storage using Spec-Driven Development (SDD) workflow.
+
+**Development Approach:**
+- Write spec → Generate plan → Break into tasks → Implement via Claude Code
+- No manual coding allowed
+- Use Agentic Dev Stack workflow throughout
+
+**Core Requirements:**
+- Implement all Basic Level features as a web application
+- Create RESTful API endpoints
+- Build responsive frontend interface
+- Store data in Neon Serverless PostgreSQL database
+- Implement user authentication with Better Auth
+
+## Technology Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 16+ (App Router) |
+| Backend | Python FastAPI |
+| ORM | SQLModel |
+| Database | Neon Serverless PostgreSQL |
+| Authentication | Better Auth (JWT-based) |
+| Development | Claude Code + Spec-Kit Plus |
+
+## Specialized Agent Usage
+
+**IMPORTANT:** Use specialized agents for domain-specific tasks. Always delegate to the appropriate agent based on the task context.
+
+### 1. Auth Agent (`auth-security-expert`)
+**Use for:**
+- Implementing user signup/signin flows
+- Better Auth integration and configuration
+- JWT token generation and verification
+- Session management
+- Password hashing and validation
+- Role-based access control (RBAC)
+- Security vulnerability assessment in auth flows
+- OAuth integration (if needed)
+
+**When to invoke:**
+- User requests authentication features
+- Implementing protected routes/endpoints
+- Security review of auth-related code
+- Troubleshooting login/session issues
+
+### 2. Frontend Agent (`nextjs-frontend-dev`)
+**Use for:**
+- Building UI components and pages
+- Next.js App Router implementation
+- Client-side state management
+- Responsive design and layouts
+- Frontend API integration
+- Form handling and validation
+- Client-side routing
+- Performance optimization (lazy loading, code splitting)
+
+**When to invoke:**
+- Creating or modifying pages/components
+- Implementing user interfaces
+- Frontend performance issues
+- Responsive design problems
+- Client-side data fetching
+
+### 3. Database Agent (`neon-db-architect`)
+**Use for:**
+- Database schema design
+- SQLModel model definitions
+- Database migrations
+- Query optimization
+- Connection pooling configuration
+- N+1 query detection and resolution
+- Data modeling and relationships
+- Index strategy
+
+**When to invoke:**
+- Designing database tables
+- Performance issues with queries
+- Schema changes or migrations
+- Connection timeout errors
+- Data modeling decisions
+
+### 4. Backend Agent (`fastapi-backend-dev`)
+**Use for:**
+- RESTful API endpoint implementation
+- Request/response handling
+- Business logic implementation
+- API validation and error handling
+- Database integration via SQLModel
+- Middleware implementation
+- API documentation (OpenAPI/Swagger)
+- Background tasks and async operations
+
+**When to invoke:**
+- Creating or modifying API endpoints
+- Implementing server-side logic
+- API performance optimization
+- Backend error handling
+- Integration with database layer
+
+## Authentication Architecture
+
+### Better Auth with JWT Flow
+
+**Authentication Flow:**
+1. **User Login (Frontend)**
+   - User submits credentials via login form
+   - Better Auth validates credentials
+   - Creates session and issues JWT token
+   - Token stored securely (httpOnly cookie or secure storage)
+
+2. **API Request (Frontend → Backend)**
+   - Frontend includes JWT in request header: `Authorization: Bearer <token>`
+   - All protected API calls must include this header
+
+3. **Token Verification (Backend)**
+   - FastAPI middleware extracts token from Authorization header
+   - Verifies JWT signature using shared secret key
+   - Decodes token to extract user information (user_id, email, etc.)
+   - Validates token expiration and claims
+
+4. **User Authorization (Backend)**
+   - Matches decoded user_id with resource owner
+   - Filters data to return only user's own resources
+   - Rejects requests if user_id mismatch
+
+**Security Requirements:**
+- Store JWT secret in `.env` file (never hardcode)
+- Use httpOnly cookies for token storage when possible
+- Implement token expiration and refresh mechanism
+- Validate user_id in URL matches token user_id
+- Use HTTPS in production
+- Implement rate limiting on auth endpoints
+
+**Implementation Pattern:**
+```python
+# Backend: JWT verification dependency
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    payload = verify_jwt_token(token)  # Verify signature
+    user_id = payload.get("user_id")
+    return user_id
+
+# Backend: Protected endpoint
+@app.get("/api/users/{user_id}/tasks")
+async def get_user_tasks(
+    user_id: int,
+    current_user_id: int = Depends(get_current_user)
+):
+    if user_id != current_user_id:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    # Return only current user's tasks
+    return filter_tasks_by_user(user_id)
+```
+
+**Frontend Pattern:**
+```typescript
+// Include JWT in API calls
+const response = await fetch('/api/users/123/tasks', {
+  headers: {
+    'Authorization': `Bearer ${jwtToken}`
+  }
+});
+```
+
 ## Core Guarantees (Product Promise)
 
 - Record every user input verbatim in a Prompt History Record (PHR) after every user message. Do not truncate; preserve full multiline input.
