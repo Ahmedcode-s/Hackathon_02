@@ -1,55 +1,59 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- SYNC IMPACT REPORT
+Version change: N/A (initial creation) → 1.0.0
+Modified principles: N/A
+Added sections: All principles and sections as specified
+Removed sections: None
+Templates requiring updates: ⚠ pending - plan-template.md, spec-template.md, tasks-template.md
+Follow-up TODOs: None
+-->
+# Full-Stack Multi-User Todo Web Application Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Spec-Driven Development
+All development follows the spec → plan → tasks → implementation workflow. No code is written without first defining clear specifications and implementation plans. This ensures deterministic, reproducible outcomes and prevents scope creep.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### Security-First Architecture
+Security is built into every layer from the ground up. Authentication and data isolation are mandatory requirements. JWT tokens must be properly verified, user data must be isolated, and all protected routes must enforce authorization checks.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### Clean Separation of Concerns
+Frontend, backend, and database layers must remain cleanly separated. Each layer has distinct responsibilities: Next.js handles presentation, FastAPI manages business logic, and Neon DB stores data. Cross-layer dependencies are minimized and well-defined.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### Deterministic Reproducibility
+All builds and environments must be reproducible. Configuration is explicit and versioned. Dependencies are pinned where stability matters. Environment variables control behavior differences between deployments.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+## Additional Constraints
 
-### [PRINCIPLE_6_NAME]
+### Technology Stack Compliance
+The technology stack must remain: Next.js for frontend, FastAPI for backend, SQLModel for ORM, and Neon Serverless PostgreSQL for database. Deviations require explicit architectural approval and documentation.
 
+### REST API Standards
+All API behavior must follow REST conventions. Endpoints use standard HTTP methods and status codes. Proper error handling and validation are mandatory for all API routes.
 
-[PRINCIPLE__DESCRIPTION]
+### Authentication Enforcement
+Authentication must be enforced on every protected route. No user-scoped data access is permitted without proper JWT verification. The shared secret must be environment-driven and never hardcoded.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### Responsive UI Requirements
+All user interfaces must be responsive and work across mobile and desktop devices. Accessibility standards must be followed to ensure inclusive design.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### Persistent Storage Only
+Data must be stored persistently in the Neon database. No in-memory fallbacks or temporary storage solutions are allowed for user data.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### Code Quality Standards
+Code structure must follow framework best practices. Proper error handling, input validation, and security checks are mandatory. All code must be reviewed before merging.
+
+### Testing Requirements
+Unit tests must cover core business logic. Integration tests verify API endpoints and database interactions. Authentication flows must be tested thoroughly to prevent security vulnerabilities.
+
+### Version Control Practices
+All changes must be tracked in version control. Branches follow feature-based naming conventions. Pull requests require review and approval before merging. Commit messages follow conventional patterns.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+All development activities must comply with these constitutional principles. Deviations require explicit approval and must be documented with architectural decision records (ADRs). This constitution governs all technical decisions and overrides any conflicting practices or guidelines.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Changes to this constitution require a formal amendment process with stakeholder approval and impact assessment. Each amendment must include a migration plan for existing code and processes.
+
+**Version**: 1.0.0 | **Ratified**: 2026-02-05 | **Last Amended**: 2026-02-05
