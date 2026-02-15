@@ -48,7 +48,7 @@ const Header: React.FC = () => {
                     variant="outline"
                     size="sm"
                   >
-                    Logout
+                    Sign Out
                   </Button>
                 </div>
               </>

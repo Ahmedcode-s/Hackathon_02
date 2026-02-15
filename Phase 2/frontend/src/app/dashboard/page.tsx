@@ -9,6 +9,7 @@ import TaskForm from '@/components/tasks/TaskForm';
 import TaskFilter from '@/components/tasks/TaskFilter';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import Layout from '@/components/layout/Layout';
 
 const DashboardPage: React.FC = () => {
   const { user, loading: authLoading } = useAuth();
@@ -93,26 +94,31 @@ const DashboardPage: React.FC = () => {
 
   if (authLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 dark:border-indigo-400"></div>
-      </div>
+      <Layout>
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 dark:border-indigo-400"></div>
+        </div>
+      </Layout>
     );
   }
 
   if (!user) {
     // Redirect to login if not authenticated (this would typically be handled by a protected route wrapper)
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Access Denied</h2>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">Please log in to access the dashboard.</p>
+      <Layout>
+        <div className="flex justify-center items-center h-screen">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Access Denied</h2>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">Please log in to access the dashboard.</p>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <Layout>
+      <div className="container mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Dashboard</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">Welcome back, {user.email}!</p>
@@ -226,7 +232,8 @@ const DashboardPage: React.FC = () => {
         loading={loading}
         error={error}
       />
-    </div>
+      </div>
+    </Layout>
   );
 };
 
