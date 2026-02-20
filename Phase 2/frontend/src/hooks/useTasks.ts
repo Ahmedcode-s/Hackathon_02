@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Task, TaskFilters } from '@/types/task';
+import { Task, TaskFilters, TaskCreate, TaskUpdate } from '@/types/task';
 import { taskService } from '@/services/taskService';
 
 export interface UseTasksReturn {

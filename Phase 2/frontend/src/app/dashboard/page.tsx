@@ -197,7 +197,7 @@ const DashboardPage: React.FC = () => {
             </CardHeader>
             <CardContent>
               <TaskForm
-                onSubmit={handleCreateTask}
+                onSubmit={(formData) => handleCreateTask(formData as TaskCreate)}
                 onCancel={handleCancelCreate}
               />
             </CardContent>
