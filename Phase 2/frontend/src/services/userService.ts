@@ -14,7 +14,7 @@ export interface UserUpdateData {
 class UserService {
   async getCurrentUser(): Promise<User> {
     try {
-      const response = await apiClient.get('/users/me');
+      const response = await apiClient.get<User>('/users/me');
       return response.data;
     } catch (error: any) {
       throw new Error(error.response?.data?.detail || 'Failed to fetch user data');
@@ -23,7 +23,7 @@ class UserService {
 
   async updateUser(userId: number, userData: UserUpdateData): Promise<User> {
     try {
-      const response = await apiClient.put(`/users/${userId}`, userData);
+      const response = await apiClient.put<User>(`/users/${userId}`, userData);
       return response.data;
     } catch (error: any) {
       throw new Error(error.response?.data?.detail || 'Failed to update user');
